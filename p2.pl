@@ -7,3 +7,29 @@ Quarter: Winter 2025
 Project #: Project 2 - Prolog
 */
 
+tree(operator(pl, tree(number, X), tree(number, Y))):-
+    Res is X + Y,
+    print(Res).
+
+tree(operator(mi, tree(number, X), tree(number, Y))):-
+    Res is X - Y,
+    print(Res).
+
+tree(operator(ti, tree(number, X), tree(number, Y))):-
+    Res is X * Y,
+    print(Res).
+
+tree(operator(di, tree(number, X), tree(number, Y))):-
+    Y \= 0,
+    Res is X / Y,
+    print(Res).
+tree(operator(di, tree(number, X), tree(number, 0))):-
+    print('Div by Zero').
+
+% tree(number, Val).
+% tree(operator(Op, Left, Right)).
+% operator(Op, Left, Right).
+
+% STEP 1: read contents of file
+
+% STEP 2: parse contents of file
