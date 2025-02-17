@@ -30,9 +30,28 @@ tree(operator(di, tree(number, X), tree(number, 0))):-
 % tree(operator(Op, Left, Right)).
 % operator(Op, Left, Right).
 
-mainfunction(Infile, Outfile)
+readLines(CharCode, Res) :-
+    CharCode \= -1,
+    CharCode \= 10,
+    get0(NewCharCode),
+    readLines(NewCharCode, NewRes),
+    char_code(Char, CharCode),
+    atomic_concat(Char, NewRes, Res).
+
+readLines(10, '').
+readLines(-1, '').
+
+evaluate(Infile):-
+    see(Infile), tell(user),
     % read it
+    get0(FirstChar),
+    readLines(FirstChar, Line),
+    atomic_concat(Line, '.', Command),
+    print(Command),
 
     % parse it
 
-    % print it
+    % print it,
+
+    % end
+    seen, told.
