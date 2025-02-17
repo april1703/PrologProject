@@ -30,6 +30,9 @@ tree(operator(di, tree(number, X), tree(number, 0))):-
 % tree(operator(Op, Left, Right)).
 % operator(Op, Left, Right).
 
-% STEP 1: read contents of file
+mainfunction(Infile, Outfile)
+    % read it
 
-% STEP 2: parse contents of file
+    % parse it
+
+    % print it
