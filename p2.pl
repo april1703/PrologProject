@@ -7,49 +7,36 @@ Quarter: Winter 2025
 Project #: Project 2 - Prolog
 */
 
-tree(operator(pl, tree(number, X), tree(number, Y))):-
-    Res is X + Y,
-    print(Res).
+% postfix stack, number stack, Result, zero boolean (for /0)
+postfix([Pancake|Extra], PancakeStack, Res):-
+    Pancake \= [], Pancake \= pl, Pancake \= mi, Pancake \= ti, Pancake \= di,
+    postfix(Extra, [Pancake|PancakeStack], Res).
+postfix([pl|Extra], [TopPancake|[BottomPancake|PancakeStack]], Res):-
+    NewPancake is TopPancake + BottomPancake,
+    postfix(Extra, [NewPancake|PancakeStack], Res).
+postfix([mi|Extra], [TopPancake|[BottomPancake|PancakeStack]], Res):-
+    NewPancake is TopPancake - BottomPancake,
+    postfix(Extra, [NewPancake|PancakeStack], Res).
+postfix([ti|Extra], [TopPancake|[BottomPancake|PancakeStack]], Res):-
+    NewPancake is TopPancake * BottomPancake,
+    postfix(Extra, [NewPancake|PancakeStack], Res).
+postfix([di|Extra], [TopPancake|[BottomPancake|PancakeStack]], Res):-
+    BottomPancake \= 0,
+    NewPancake is TopPancake / BottomPancake,
+    postfix(Extra, [NewPancake|PancakeStack], Res).
+postfix([di|_], [_|[0|_]], divByZero).
+postfix([], [FinalCake|_], FinalCake).
 
-tree(operator(mi, tree(number, X), tree(number, Y))):-
-    Res is X - Y,
-    print(Res).
-
-tree(operator(ti, tree(number, X), tree(number, Y))):-
-    Res is X * Y,
-    print(Res).
-
-tree(operator(di, tree(number, X), tree(number, Y))):-
-    Y \= 0,
-    Res is X / Y,
-    print(Res).
-tree(operator(di, tree(number, X), tree(number, 0))):-
-    print('Div by Zero').
-
-% tree(number, Val).
-% tree(operator(Op, Left, Right)).
-% operator(Op, Left, Right).
-
-% recursively reads each character in a file - sadie
-readLines(CharCode, Res) :-
-    CharCode \= -1,
-    CharCode \= 10,
-    get0(NewCharCode),
-    readLines(NewCharCode, NewRes),
-    char_code(Char, CharCode),
-    atomic_concat(Char, NewRes, Res).
-readLines(10, '').
-readLines(-1, '').
 
 % MAIN FUNCTION %
-evaluate(Infile, Outfile):-
+evaluate(Infile):-
     % set up the file contents
-    see(Infile), tell(Outfile),
+    see(Infile), seeing(INSTREAM),
 
     % read it
-    get0(FirstChar),
-    readLines(FirstChar, Line),
-    atomic_concat(Line, '.', Command),
+    read_line_to_codes(INSTREAM, LineArray),
+    parseLine(LineArray, Line),
+    print(Line),
     % print(Command),
 
     % parse it
