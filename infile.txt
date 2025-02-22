@@ -1,1 +1,0 @@
-tree(operator(pl, tree(number, 3), tree(number, 4)))
