@@ -31,19 +31,6 @@ postfix([di|_], [_|[0|_]], divByZero).
 % base case: empty array
 postfix([], [FinalCake|_], FinalCake).
 
-
-evalLineByLine([Input|Tail]):-
-    Input \= '',
-    % set the line up
-    % parse the line
-    postfix(NumberArray, [], FinalResult),
-    % print the results
-    print('result = '),
-    print(FinalResult),
-    nl.
-
-evalLineByLine([]).
-
 % MAIN FUNCTION %
 evaluate(Infile):-
     % set up the file contents
@@ -51,10 +38,9 @@ evaluate(Infile):-
 
     % read it
     read_line_to_codes(INSTREAM, LineArray),
-    print(Line),
-    % print(Command),
 
     % parse it
+    postfix(ArrayOfOperation, [], FinalResult),
 
 
     % print it,
@@ -62,3 +48,7 @@ evaluate(Infile):-
 
     % close files
     seen, told.
+evaluate(Infile, _):-
+    see(Infile), seeing(INSTREAM),
+    read_line_to_codes(INSTREAM, LineArray),
+    LineArray == end_of_file.
