@@ -7,10 +7,12 @@ Quarter: Winter 2025
 Project #: Project 2 - Prolog
 */
 
-% postfix stack, number stack, Result, zero boolean (for /0)
+% postfix stack, number stack, Result
+% check if number
 postfix([Pancake|Extra], PancakeStack, Res):-
     Pancake \= [], Pancake \= pl, Pancake \= mi, Pancake \= ti, Pancake \= di,
     postfix(Extra, [Pancake|PancakeStack], Res).
+% check if operator
 postfix([pl|Extra], [TopPancake|[BottomPancake|PancakeStack]], Res):-
     NewPancake is TopPancake + BottomPancake,
     postfix(Extra, [NewPancake|PancakeStack], Res).
@@ -24,9 +26,23 @@ postfix([di|Extra], [TopPancake|[BottomPancake|PancakeStack]], Res):-
     BottomPancake \= 0,
     NewPancake is TopPancake / BottomPancake,
     postfix(Extra, [NewPancake|PancakeStack], Res).
+% check for division by zero
 postfix([di|_], [_|[0|_]], divByZero).
+% base case: empty array
 postfix([], [FinalCake|_], FinalCake).
 
+
+evalLineByLine([Input|Tail]):-
+    Input \= '',
+    % set the line up
+    % parse the line
+    postfix(NumberArray, [], FinalResult),
+    % print the results
+    print('result = '),
+    print(FinalResult),
+    nl.
+
+evalLineByLine([]).
 
 % MAIN FUNCTION %
 evaluate(Infile):-
@@ -35,7 +51,6 @@ evaluate(Infile):-
 
     % read it
     read_line_to_codes(INSTREAM, LineArray),
-    parseLine(LineArray, Line),
     print(Line),
     % print(Command),
 
