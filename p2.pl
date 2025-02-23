@@ -83,31 +83,28 @@ printToOut(Res):-
 
 
 % MAIN FUNCTION %
-evaluate(Infile, Outfile):-
-    % set up the file contents
-    see(Infile), seeing(INSTREAM),
-    tell(Outfile),
-
+evaluateMain(Instream):-
     % read it
-    read_line_to_codes(INSTREAM, RawLineArray),
+    read_line_to_codes(Instream, RawLineArray),
     RawLineArray \= end_of_file,
+
     % atom & num list 
     allTogether(RawLineArray, Temp),
-    
+
     % parse it
-    % deleted reverse bc there's a built-in predicate from our notes 
     reverse(Temp,X),
-    postfix(X, _, FinalResult),
+    postfix(X, [], FinalResult),
     
     % print it,
-    write(FinalResult),
-    %print(FinalResult),
     printToOut(FinalResult),
+    evaluateMain(Instream).
 
-    % close files
+evaluateMain(Instream):-
+    read_line_to_codes(Instream, Line),
+    Line == end_of_file.
+
+evaluate(Infile, Outfile):-
+    see(Infile), seeing(Instream),
+    tell(Outfile),
+    evaluateMain(Instream),
     seen, told.
-
-evaluate(Infile, _):-
-    see(Infile), seeing(INSTREAM),
-    read_line_to_codes(INSTREAM, LineArray),
-    LineArray == end_of_file.

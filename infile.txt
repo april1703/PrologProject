@@ -1,0 +1,2 @@
+tree(operator(pl, tree(number, 3), tree(operator(ti, tree(number, 5), tree(number, 2)))))
+tree(operator(di, tree(number, 12), tree(number, 0)))
