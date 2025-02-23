@@ -7,6 +7,49 @@ Quarter: Winter 2025
 Project #: Project 2 - Prolog
 */
 
+allTogether(NumL,R) :-
+    % deals with ascii numbers of commas and parenthesis
+    delNum(NumL,NumL2),
+    
+    % takes rest of ascii list and turns it into a string, then string list 
+    string_codes(Str,NumL2),
+    split_string(Str, " ", " ", StrList),
+    
+    % removes "tree", "operator", "number" from string list
+    rmStr(StrList, X),
+    % converts to integers
+    toInt(X, NewX),
+    % converts operators to atoms
+    toAtom(NewX, Z).
+
+
+% take ascii num list and replace commas and parenthesis with spaces
+delNum(L, X) :- replace(44, L, X1), replace(40, X1, X2), replace(41, X2, X).
+% helper function
+replace(_,[],[]).
+replace(N, [N|T], [32|R]) :- replace(N, T, R).
+replace(N, [H|T], [H|R]) :- H \== N, replace(N, T, R).
+
+
+% take string list and deletes all occurrences of "tree", "operator", "number"
+rmStr([],[]).
+rmStr([H|T], [H|R]) :- 
+    H \= "tree",
+    H \= "operator",
+    H \= "number", !,
+    rmStr(T, R).
+rmStr([_|T], R) :- rmStr(T, R).
+
+% covert strings in array to integers - April
+toInt([H|T], [N|NewT]) :- number_string(N, H), !, toInt(T, NewT).
+toInt([H|T], [H|NewT]) :- toInt(T, NewT).
+% base case
+toInt([],[]).
+
+toAtom([H|T], [A|NewT]) :- string(H), atom_string(A, H), toAtom(T,NewT).
+toAtom([H|T], [H|NewT]) :- integer(H), toAtom(T,NewT).
+toAtom([],[]).
+
 % reverse: reverse an array, go from pre- to post-fix
 reverse([H|T], R):-
     reverse(T, NewH),
