@@ -97,7 +97,8 @@ evaluateMain(Instream):-
     
     % print it,
     printToOut(FinalResult),
-    evaluateMain(Instream).
+    evaluateMain(Instream),
+    !.
 
 evaluateMain(Instream):-
     read_line_to_codes(Instream, Line),
