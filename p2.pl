@@ -51,6 +51,7 @@ toAtom([H|T], [H|NewT]) :- integer(H), toAtom(T,NewT).
 toAtom([],[]).
 
 % reverse: reverse an array, go from pre- to post-fix
+% theres a built in predicate for this in our notes
 reverse([H|T], R):-
     reverse(T, NewH),
     append(NewH, [H], R).
